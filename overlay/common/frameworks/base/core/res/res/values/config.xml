@@ -124,4 +124,22 @@
     -->
     <bool name="config_enableWifiDisplay">true</bool>
 
+    <!-- Whether safe headphone volume is enabled or not (country specific). -->
+    <bool name="config_safe_media_volume_enabled">false</bool>
+
+    <!-- Flag indicating whether the assist disclosure can be disabled using
+         ASSIST_DISCLOSURE_ENABLED. -->
+    <bool name="config_allowDisablingAssistDisclosure">true</bool>
+
+    <!-- If true, the screen can be rotated via the accelerometer in all 4
+         rotations as the default behavior. -->
+    <bool name="config_allowAllRotations">true</bool>
+
+    <!-- Minimum color temperature, in Kelvin, supported by Night display. -->
+    <integer name="config_nightDisplayColorTemperatureMin">1600</integer>
+
+    <!-- Default color temperature, in Kelvin, to tint the screen when Night display is
+         activated. -->
+    <integer name="config_nightDisplayColorTemperatureDefault">2650</integer>
+
 </resources>
