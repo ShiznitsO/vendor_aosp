@@ -1,4 +1,4 @@
-PRODUCT_BRAND ?= PixelExperience
+PRODUCT_BRAND ?= nitrogen
 
 PRODUCT_BUILD_PROP_OVERRIDES += BUILD_UTC_DATE=0
 
@@ -50,10 +50,12 @@ endif
 
 # Backup Tool
 PRODUCT_COPY_FILES += \
+    vendor/aosp/prebuilt/common/addon.d/50-nitrogen.sh:system/addon.d/50-nitrogen.sh \
     vendor/aosp/prebuilt/common/bin/backuptool.sh:install/bin/backuptool.sh \
     vendor/aosp/prebuilt/common/bin/backuptool.functions:install/bin/backuptool.functions \
     vendor/aosp/prebuilt/common/bin/50-base.sh:system/addon.d/50-base.sh \
-    vendor/aosp/prebuilt/common/bin/blacklist:system/addon.d/blacklist
+    vendor/aosp/prebuilt/common/bin/blacklist:system/addon.d/blacklist \
+    vendor/aosp/prebuilt/common/bin/clean_cache.sh:system/bin/clean_cache.sh
 
 # Some permissions
 PRODUCT_COPY_FILES += \
@@ -175,6 +177,57 @@ PRODUCT_PACKAGES += \
     procrank
 endif
 
+# Disable HDCP check
+PRODUCT_PROPERTY_OVERRIDES += \
+    persist.sys.wfd.nohdcp=1
+
+PRODUCT_DEFAULT_PROPERTY_OVERRIDES := \
+    ro.adb.secure=0 \
+    ro.secure=0 \
+    persist.service.adb.enable=1
+
+# Fix Dialer
+PRODUCT_COPY_FILES +=  \
+    vendor/aosp/prebuilt/common/etc/sysconfig/dialer_experience.xml:system/etc/sysconfig/dialer_experience.xml
+
+# Latin IME lib - gesture typing
+ifeq ($(TARGET_ARCH),arm64)
+PRODUCT_COPY_FILES += \
+    vendor/aosp/prebuilt/common/lib64/libjni_latinimegoogle.so:system/lib64/libjni_latinimegoogle.so \
+    vendor/aosp/prebuilt/common/lib/libjni_latinimegoogle.so:system/lib/libjni_latinimegoogle.so
+else
+PRODUCT_COPY_FILES += \
+    vendor/aosp/prebuilt/common/lib/libjni_latinimegoogle.so:system/lib/libjni_latinimegoogle.so
+endif
+
+# Extra packages
+PRODUCT_PACKAGES += \
+    DaylightHeaderNitrogen \
+    Launcher3 \
+    NitrogenWallpapers \
+    OmniJaws \
+    Stk \
+    Terminal
+
+# Init.d script support
+PRODUCT_COPY_FILES += \
+    vendor/aosp/prebuilt/common/init.d/00banner:system/etc/init.d/00banner \
+    vendor/aosp/prebuilt/common/init.d/init.d.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/hw/init.d.rc
+
+# DU Utils Library
+PRODUCT_BOOT_JARS += \
+    org.dirtyunicorns.utils
+
+# DU Utils Library
+PRODUCT_PACKAGES += \
+    org.dirtyunicorns.utils
+
+# Boot animations
+$(call inherit-product-if-exists, vendor/aosp/config/bootanimation.mk)
+
+# Themes
+$(call inherit-product-if-exists, vendor/aosp/config/themes.mk)
+
 DEVICE_PACKAGE_OVERLAYS += vendor/aosp/overlay/common
 
 # Branding
@@ -188,8 +241,5 @@ include vendor/aosp/config/gapps.mk
 
 # Pixel Style
 include vendor/pixelstyle/config.mk
-
-# Themes
-include vendor/themes/config.mk
 
 -include $(WORKSPACE)/build_env/image-auto-bits.mk
