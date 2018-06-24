@@ -13,7 +13,10 @@ PRODUCT_COPY_FILES += \
 # Telephony packages
 PRODUCT_PACKAGES += \
     Stk \
-    CellBroadcastReceiver
+    CellBroadcastReceiver \
+    messaging \
+    Dialer \
+    Contacts
 
 # Tethering - allow without requiring a provisioning app
 # (for devices that check this)

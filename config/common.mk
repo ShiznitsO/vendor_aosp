@@ -225,21 +225,26 @@ PRODUCT_PACKAGES += \
 # Boot animations
 $(call inherit-product-if-exists, vendor/aosp/config/bootanimation.mk)
 
-# Themes
-$(call inherit-product-if-exists, vendor/aosp/config/themes.mk)
+PRODUCT_PACKAGES += \
+    Email \
+    LatinIME \
+    crDroidHome3 \
+    crDroidMusic \
+    Jelly \
+    Calendar \
+    DeskClock \
+    ExactCalculator \
+    WallpaperPicker
 
 DEVICE_PACKAGE_OVERLAYS += vendor/aosp/overlay/common
 
 # Branding
 include vendor/aosp/config/branding.mk
 
-# OTA
-include vendor/aosp/config/ota.mk
-
-# GApps
-include vendor/aosp/config/gapps.mk
-
 # Pixel Style
 include vendor/pixelstyle/config.mk
+
+# Themes	
+include vendor/themes/config.mk
 
 -include $(WORKSPACE)/build_env/image-auto-bits.mk
